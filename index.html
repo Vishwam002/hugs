@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Happy Hug Day 🤍</title>
+
+<style>
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:'Poppins', sans-serif;
+}
+
+body{
+  height:100vh;
+  background:linear-gradient(135deg,#f6d6d6,#fbeaea);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  overflow:hidden;
+}
+
+/* ---------- Loader Screen ---------- */
+.loader-screen{
+  text-align:center;
+  color:#5a3e36;
+}
+
+.heart-loader{
+  width:120px;
+  height:120px;
+  border-radius:50%;
+  border:6px solid #f3b6b6;
+  border-top-color:#ff6f91;
+  animation:spin 2s linear infinite;
+  margin:0 auto 20px;
+}
+
+@keyframes spin{
+  100%{transform:rotate(360deg);}
+}
+
+.loader-screen p{
+  font-size:1.1rem;
+  margin-top:10px;
+}
+
+/* ---------- Hug Meter Screen ---------- */
+.meter-screen{
+  display:none;
+  text-align:center;
+  color:#5a3e36;
+}
+
+.meter{
+  width:280px;
+  height:20px;
+  background:#ffe6e6;
+  border-radius:20px;
+  overflow:hidden;
+  margin:20px auto;
+}
+
+.fill{
+  height:100%;
+  width:0%;
+  background:#ff6f91;
+  transition:width 0.2s;
+}
+
+button{
+  padding:12px 30px;
+  border:none;
+  border-radius:25px;
+  font-size:1rem;
+  cursor:pointer;
+  background:#ff6f91;
+  color:white;
+}
+
+/* ---------- Final Hug Screen ---------- */
+.final-screen{
+  display:none;
+  position:absolute;
+  inset:0;
+  background:url('hug.jpg') center/cover no-repeat;
+  align-items:center;
+  justify-content:center;
+}
+
+.overlay{
+  background:rgba(0,0,0,0.55);
+  color:white;
+  padding:40px;
+  border-radius:20px;
+  text-align:center;
+  max-width:700px;
+  animation:fade 1.5s ease;
+}
+
+@keyframes fade{
+  from{opacity:0;transform:scale(0.9);}
+  to{opacity:1;transform:scale(1);}
+}
+
+.overlay p{
+  font-size:1.2rem;
+  line-height:1.7;
+  margin-top:15px;
+}
+</style>
+</head>
+
+<body>
+
+<!-- Optional Music -->
+<audio id="bgMusic" loop>
+  <source src="music.mp3" type="audio/mpeg">
+</audio>
+
+<!-- Loader Screen -->
+<div class="loader-screen" id="loader">
+  <div class="heart-loader"></div>
+  <h2>Warm Hug Loading… 🫶</h2>
+  <p>Good hugs take time 🤍</p>
+</div>
+
+<!-- Hug Meter Screen -->
+<div class="meter-screen" id="meterScreen">
+  <h2>Hug Meter 🤗</h2>
+  <div class="meter">
+    <div class="fill" id="fill"></div>
+  </div>
+  <p id="status">Hold to Hug 🤍</p>
+  <button id="holdBtn">Hold to Hug</button>
+</div>
+
+<!-- Final Hug Screen -->
+<div class="final-screen" id="final">
+  <div class="overlay">
+    <h1>You’re officially hugged 🫂</h1>
+    <p>
+      This hug is warm, safe, and meant just for you.  
+      Whenever things feel heavy or quiet,  
+      remember — you’re never alone 🤍
+    </p>
+    <p>🤍🤗✨</p>
+  </div>
+</div>
+
+<script>
+setTimeout(()=>{
+  document.getElementById("loader").style.display="none";
+  document.getElementById("meterScreen").style.display="block";
+},3000);
+
+let percent=0;
+let interval;
+
+const fill=document.getElementById("fill");
+const status=document.getElementById("status");
+const btn=document.getElementById("holdBtn");
+
+btn.addEventListener("mousedown",start);
+btn.addEventListener("touchstart",start);
+
+btn.addEventListener("mouseup",stop);
+btn.addEventListener("mouseleave",stop);
+btn.addEventListener("touchend",stop);
+
+function start(){
+  interval=setInterval(()=>{
+    if(percent<100){
+      percent++;
+      fill.style.width=percent+"%";
+
+      if(percent==25) status.innerText="That feels nice 🤍";
+      if(percent==50) status.innerText="Don’t stop 🫶";
+      if(percent==75) status.innerText="Almost there…";
+
+      if(percent==100){
+        document.getElementById("meterScreen").style.display="none";
+        document.getElementById("final").style.display="flex";
+        document.getElementById("bgMusic").play();
+        clearInterval(interval);
+      }
+    }
+  },40);
+}
+
+function stop(){
+  clearInterval(interval);
+}
+</script>
+
+</body>
+</html>
